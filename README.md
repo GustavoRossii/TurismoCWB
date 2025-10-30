@@ -31,7 +31,7 @@ Uma aba comparativa que resolve o Problema do Caixeiro Viajante (TSP) em subconj
 2.  **Branch and Cut (B&C) via PuLP:** Uma formulação de Programação Linear Inteira (PLI) que utiliza o solver **CBC** (via PuLP). O CBC aplica um algoritmo de Branch and Cut (B&B + Cutting Planes) para encontrar a solução ótima (Spec 2.1).
 
 ## 3. Estrutura do Projeto
-
+```
 ├── Turismo
     ├── algoritmos.py
     ├── app.py
@@ -40,7 +40,7 @@ Uma aba comparativa que resolve o Problema do Caixeiro Viajante (TSP) em subconj
     ├── test_algoritmos.py
     ├── TurismoCWB(1).csv
     └── README.md
-
+```
 ## 4. Como Executar
 
 ### Pré-requisitos
