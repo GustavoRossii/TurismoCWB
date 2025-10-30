@@ -80,19 +80,8 @@ O aplicativo será aberto automaticamente no seu navegador.
 
 5. Evidência de Validação (Testes Unitários - Spec 5.3)
 
-Para validar as funções críticas do projeto (cálculo de tempo, heurística, etc.), foi criado o seguinte script de testes (test_algoritmos.py).
-
-Conteúdo do test_algoritmos.py
-
-Python
-
-# Este arquivo deve ser salvo como: test_algoritmos.py
-
-import pytest
-import algoritmos as alg
-
 # --- Spec 5.3: Testes Unitários ---
-
+```bash
 def test_calculo_tempo_viagem():
     """ Testa a função crítica de cálculo de tempo (Spec 5.3) """
     
@@ -106,7 +95,7 @@ def test_calculo_tempo_viagem():
 
     # Cenário 3: 0 km deve levar 0 minutos
     tempo = alg.calculate_travel_time(dist_km=0, avg_speed_kmh=50)
-    assert tempo == 0.0
+    assert tempo == 0.0```
 
 @pytest.fixture
 def dados_carregados():
@@ -148,4 +137,4 @@ def test_heuristica_orcamento_limite_zero(dados_carregados):
         max_time_min=500, max_cost=0, start_node_id=1
     )
     # O Jardim Botânico (ID 1) custa R$ 15.
-    assert len(route) == 0 # Não deve conseguir adicionar nem o ponto de partida
+    assert len(route) == 0 # Não deve conseguir adicionar nem o ponto de partida```
