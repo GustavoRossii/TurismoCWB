@@ -8,7 +8,7 @@ O sistema é implementado em Python e apresenta uma interface web interativa (St
 
 O projeto utiliza um conjunto de dados público de 20 pontos turísticos de Curitiba, obtido na plataforma Kaggle.
 
-* **Link do Dataset:** [https://www.kaggle.com/datasets/gustavorossi14/turismocwb](https://www.kaggle.com/datasets/gustavorossi14/turismocwb)
+* **Link do Dataset:** [Kaggle.com](https://www.kaggle.com/datasets/gustavorossi14/turismocwb)
 * **Arquivo:** `TurismoCWB(1).csv`
 
 ## 2. Funcionalidades e Modelos
@@ -37,7 +37,6 @@ Uma aba comparativa que resolve o Problema do Caixeiro Viajante (TSP) em subconj
     ├── app.py
     ├── requirements.txt
     ├── solver_pulp.py
-    ├── test_algoritmos.py
     ├── TurismoCWB(1).csv
     └── README.md
 ```
