@@ -142,4 +142,46 @@ def test_heuristica_orcamento_limite_zero(dados_carregados):
         max_time_min=500, max_cost=0, start_node_id=1
     )
     # O Jardim Botânico (ID 1) custa R$ 15.
-    assert len(route) == 0 # Não deve conseguir adicionar nem o ponto de partida```
+    assert len(route) == 0 # Não deve conseguir adicionar nem o ponto de partida
+```
+## 2.1 Modelagem Formal dos Problemas (Spec 2.1)
+
+O projeto aborda dois problemas de otimização distintos, cada um com sua própria modelagem matemática.
+
+### A. Rota TSP (Branch and Bound / Branch and Cut)
+
+Este é um Problema do Caixeiro Viajante (TSP - *Traveling Salesperson Problem*).
+```
+* **Variáveis de Decisão:**
+    * $x_{ij} = 1$ se a rota vai diretamente do ponto $i$ ao ponto $j$.
+    * $x_{ij} = 0$ caso contrário.
+    * $u_i$ = Variável auxiliar inteira para eliminação de sub-rota (usada na formulação PuLP/MTZ).
+
+* **Função Objetivo (Minimização):**
+    * Minimizar a distância total percorrida. Onde $d_{ij}$ é a distância (custo) entre $i$ e $j$.
+    * $$\min Z = \sum_{i=0}^{N-1} \sum_{j=0}^{N-1} d_{ij} \cdot x_{ij}$$
+
+* **Restrições:**
+    1.  **Sair de cada ponto 1x:** $\sum_{j \neq i} x_{ij} = 1, \forall i$ (Cada ponto deve ter exatamente uma saída).
+    2.  **Chegar em cada ponto 1x:** $\sum_{i \neq j} x_{ij} = 1, \forall j$ (Cada ponto deve ter exatamente uma chegada).
+    3.  **Eliminação de Sub-rotas (MTZ):** $u_i - u_j + N \cdot x_{ij} \le N - 1, \forall i,j > 0, i \neq j$ (Garante um *tour* único e conectado).
+    4.  **Integridade:** $x_{ij} \in \{0, 1\}$ (As decisões são binárias).
+
+### B. Rota por Orçamento (Heurística Gulosa)
+
+Este é um Problema de Coleta de Prêmios (*Prize-Collecting Problem*).
+
+* **Variáveis de Decisão:**
+    * $y_i = 1$ se o ponto $i$ é visitado.
+    * $y_i = 0$ caso contrário.
+
+* **Função Objetivo (Maximização):**
+    * Maximizar o *score* de popularidade total dos pontos visitados. Onde $p_i$ é a popularidade do ponto $i$.
+    * $$\max Z = \sum_{i=1}^{N} p_i \cdot y_i$$
+    *(Nota: A heurística implementada usa um *score* ponderado (popularidade / tempo) para tomar decisões gulosas.)*
+
+* **Restrições:**
+    1.  **Orçamento de Custo:** $\sum_{i=1}^{N} c_i \cdot y_i \le C_{max}$ (O custo total de entrada $c_i$ não pode exceder o custo máximo $C_{max}$).
+    2.  **Orçamento de Tempo:** $\sum_{i=1}^{N} (t_{visita,i} + t_{desloc,i}) \cdot y_i \le T_{max}$ (O tempo total (visita + deslocamento) não pode exceder o tempo máximo $T_{max}$).
+    3.  **Integridade:** $y_i \in \{0, 1\}$ (A visita é binária).
+```
