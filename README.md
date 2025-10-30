@@ -32,7 +32,12 @@ Uma aba comparativa que resolve o Problema do Caixeiro Viajante (TSP) em subconj
 
 ## 3. Estrutura do Projeto
 
-. ├── 📄 TurismoCWB(1).csv # O conjunto de dados ├── 🐍 app.py # Script principal do Streamlit (Front-end) ├── 🐍 algoritmos.py # Módulo com B&B Puro, Heurística e funções de cálculo ├── 🐍 solver_pulp.py # Módulo com a modelagem PLI e o solver B&C (PuLP) ├── 🧪 test_algoritmos.py # Testes unitários (Pytest) (Spec 5.3) ├── 📋 requirements.txt # Dependências do projeto (Spec 3.3) └── 📖 README.md # Este arquivo
+. ├── Turismo
+    ├── algoritmos.py
+    ├── app.py
+    ├── requirements.txt
+    ├── solver_pulp.py
+    ├── TurismoCWB.csv
 
 
 ## 4. Como Executar
