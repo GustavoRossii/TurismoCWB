@@ -33,11 +33,11 @@ Uma aba comparativa que resolve o Problema do Caixeiro Viajante (TSP) em subconj
 ## 3. Estrutura do Projeto
 
 . ├── Turismo<br>
-  <br><br>  ├── algoritmos.py<br>
-  <br><br>  ├── app.py<br>
-  <br><br>  ├── requirements.txt<br>
-   <br><br> ├── solver_pulp.py<br>
-    <br><br>├── TurismoCWB.csv<br>
+      ├── algoritmos.py<br>
+      ├── app.py<br>
+      ├── requirements.txt<br>
+      ├── solver_pulp.py<br>
+      ├── TurismoCWB.csv<br>
 
 
 ## 4. Como Executar
