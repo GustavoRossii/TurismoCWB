@@ -4,15 +4,15 @@ import pandas as pd
 import numpy as np
 from haversine import haversine, Unit
 import time
-import sys
+import sys # Mantido por precaução, embora o setrecursionlimit tenha sido removido
 
 # --- Configurações Globais ---
-AVG_SPEED_KMH = 25  # Velocidade média estimada para deslocamento em Curitiba
+# CORREÇÃO 1: Mudei 25 para 25.0 para evitar erro de tipo no Streamlit
+AVG_SPEED_KMH = 25.0  # Velocidade média estimada para deslocamento em Curitiba
 CSV_FILE = 'TurismoCWB(1).csv'
 
 # --- Variáveis Globais para o B&B (Spec 3.2) ---
-# Usamos classes para gerenciar o estado e evitar 'globals' 
-# que não funcionam bem com Streamlit
+# (Nenhuma alteração nesta classe)
 class BnBStats:
     def __init__(self):
         self.upper_bound = float('inf')
@@ -54,7 +54,6 @@ def load_data():
             df = df.drop(columns=['Unnamed: 0'])
         
         # Spec 1.2: Limpeza e padronização
-        # Tratar valores ausentes (ex: preencher com 0 ou mediana)
         df['custo_entrada'] = df['custo_entrada'].fillna(0)
         df['tempo_visita_min'] = df['tempo_visita_min'].fillna(df['tempo_visita_min'].median())
         
@@ -168,15 +167,19 @@ def _solve_tsp_branch_and_bound(dist_matrix, stats):
 
 def run_tsp_experiment(experiment_name, nodes_data):
     """
-    Função wrapper para rodar um experimento TSP B&B de 10 nós.
+    Função wrapper para rodar um experimento TSP B&B.
     Retorna o nome, as métricas e o caminho.
     """
-    if len(nodes_data) != 10:
+    # CORREÇÃO 2: Removida a restrição de "!= 10"
+    # Agora aceita qualquer número de nós (desde que >= 2)
+    if len(nodes_data) < 2:
+        print("Erro B&B: Pelo menos 2 nós são necessários.")
         return None
     
-    # Aumenta o limite de recursão para o B&B
-    sys.setrecursionlimit(2000) 
-
+    # CORREÇÃO 3: Removido o sys.setrecursionlimit, pois
+    # a implementação _solve_tsp_branch_and_bound é iterativa (usa stack)
+    # e não recursiva.
+    
     index_to_name = {i: node['nome'] for i, node in enumerate(nodes_data)}
     dist_matrix = calculate_distance_matrix(nodes_data)
     
@@ -195,7 +198,7 @@ def run_tsp_experiment(experiment_name, nodes_data):
     # Formatar resultados
     results = stats.get_results()
     results['name'] = experiment_name
-    results['heuristic_cost'] = heuristic_cost
+    results['heuristic_cost'] = heuristic_cost # Inclui o custo da heurística
     results['path_names'] = " -> ".join([index_to_name[idx] for idx in results['path']])
     
     return results
@@ -223,7 +226,7 @@ def solve_budget_route_heuristic(all_nodes, dist_matrix_full, id_to_index, max_t
         log_messages.append(f"Erro: Nó inicial (ID {start_node_id}) não encontrado.")
         return [], {}, log_messages
 
-    # 1. Adicionar o ponto de partida (Jardim Botânico)
+    # 1. Adicionar o ponto de partida
     if start_node_data['tempo_visita_min'] <= max_time_min and start_node_data['custo_entrada'] <= max_cost:
         route.append(start_node_data)
         route_cost = start_node_data['custo_entrada']
@@ -232,7 +235,7 @@ def solve_budget_route_heuristic(all_nodes, dist_matrix_full, id_to_index, max_t
         visited_ids = {start_node_id}
         log_messages.append(f"Ponto de partida: {start_node_data['nome']} (Custo: R${route_cost}, Tempo: {route_time} min)")
     else:
-        log_messages.append("Ponto de partida (Jardim Botânico) excede o orçamento. Rota vazia.")
+        log_messages.append(f"Ponto de partida ({start_node_data['nome']}) excede o orçamento. Rota vazia.")
         return [], {}, log_messages
 
     # 2. Loop Guloso
